@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "minecraft:netherite_block",
+  "result": {
+    "id": "solid_gold_stairs:netherite_slab",
+    "count": 2
+  }
+}

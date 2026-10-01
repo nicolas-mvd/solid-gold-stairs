@@ -1,48 +1,48 @@
 package net.steveson.solidgoldstairs.block.custom;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.SlabBlock;
-import net.minecraft.block.enums.SlabType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.BlockView;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.state.properties.SlabType;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.BlockGetter;
 import net.steveson.solidgoldstairs.util.ModTags;
 
 public class PoweredSlabBlock extends SlabBlock {
-    public PoweredSlabBlock(Settings settings) {
+    public PoweredSlabBlock(Properties settings) {
         super(settings);
     }
 
     @Override
-    public boolean emitsRedstonePower(BlockState state) {
-        return state.get(TYPE) != SlabType.TOP;
+    public boolean isSignalSource(BlockState state) {
+        return true;
     }
 
     @Override
-    public int getStrongRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) {
-        if (state.get(TYPE) == SlabType.DOUBLE && world.getBlockState(pos.offset(direction.getOpposite())).getBlock() == Blocks.COMPARATOR) {
+    public int getDirectSignal(BlockState state, BlockGetter world, BlockPos pos, Direction direction) {
+        if (state.getValue(TYPE) == SlabType.DOUBLE && world.getBlockState(pos.relative(direction.getOpposite())).getBlock() == Blocks.COMPARATOR) {
             return 15;
         }
-        if (state.get(TYPE) == SlabType.BOTTOM && world.getBlockState(pos.offset(direction.getOpposite())).getBlock() == Blocks.COMPARATOR) {
+        if (state.getValue(TYPE) == SlabType.BOTTOM && world.getBlockState(pos.relative(direction.getOpposite())).getBlock() == Blocks.COMPARATOR) {
             return 7;
         }
         return 0;
     }
 
     @Override
-    public int getWeakRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) {
-        if (state.get(TYPE) == SlabType.DOUBLE) {
+    public int getSignal(BlockState state, BlockGetter world, BlockPos pos, Direction direction) {
+        if (state.getValue(TYPE) == SlabType.DOUBLE) {
             return 15;
         }
-        if (state.get(TYPE) == SlabType.BOTTOM && direction != Direction.DOWN) {
+        if (state.getValue(TYPE) == SlabType.BOTTOM && direction != Direction.DOWN) {
             return 7;
         }
-        if (state.get(TYPE) == SlabType.TOP) {
+        if (state.getValue(TYPE) == SlabType.TOP) {
             if (direction == Direction.DOWN) {
                 return 7;
             }
-            if (!world.getBlockState(pos.offset(direction.getOpposite())).isIn(ModTags.Blocks.LOW_REDSTONE_COMPONENTS)) {
+            if (!world.getBlockState(pos.relative(direction.getOpposite())).is(ModTags.Blocks.LOW_REDSTONE_COMPONENTS)) {
                 return 7;
             }
         }

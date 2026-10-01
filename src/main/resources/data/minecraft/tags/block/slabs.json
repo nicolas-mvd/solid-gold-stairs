@@ -1,0 +1,24 @@
+{
+  "replace": false,
+  "values": [
+    "solid_gold_stairs:coal_slab",
+    "solid_gold_stairs:iron_slab",
+    "solid_gold_stairs:gold_slab",
+    "solid_gold_stairs:redstone_slab",
+    "solid_gold_stairs:emerald_slab",
+    "solid_gold_stairs:lapis_slab",
+    "solid_gold_stairs:diamond_slab",
+    "solid_gold_stairs:netherite_slab",
+    "solid_gold_stairs:chiseled_quartz_slab",
+    "solid_gold_stairs:quartz_brick_slab",
+    "solid_gold_stairs:amethyst_slab",
+    "solid_gold_stairs:copper_slab",
+    "solid_gold_stairs:exposed_copper_slab",
+    "solid_gold_stairs:weathered_copper_slab",
+    "solid_gold_stairs:oxidized_copper_slab",
+    "solid_gold_stairs:waxed_copper_slab",
+    "solid_gold_stairs:waxed_exposed_copper_slab",
+    "solid_gold_stairs:waxed_weathered_copper_slab",
+    "solid_gold_stairs:waxed_oxidized_copper_slab"
+  ]
+}

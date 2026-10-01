@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    "solid_gold_stairs:exposed_copper_stairs",
+    "minecraft:honeycomb"
+  ],
+  "result": {
+    "id": "solid_gold_stairs:waxed_exposed_copper_stairs",
+    "count": 1
+  }
+}

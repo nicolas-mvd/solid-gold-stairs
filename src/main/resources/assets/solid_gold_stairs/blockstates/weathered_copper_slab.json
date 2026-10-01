@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "solid_gold_stairs:block/weathered_copper_slab"
+    },
+    "type=top": {
+      "model": "solid_gold_stairs:block/weathered_copper_slab_top"
+    },
+    "type=double": {
+      "model": "minecraft:block/weathered_copper"
+    }
+  }
+}

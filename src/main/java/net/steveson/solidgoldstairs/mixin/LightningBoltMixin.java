@@ -1,50 +1,31 @@
 package net.steveson.solidgoldstairs.mixin;
 
-import com.llamalad7.mixinextras.sugar.Local;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LightningEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import net.minecraft.world.entity.LightningBolt;
+import net.minecraft.world.level.block.state.BlockState;
 import net.steveson.solidgoldstairs.block.custom.SteveHasWeatheringCopper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
-
-import java.util.Iterator;
 import java.util.Optional;
 
-@Mixin(LightningEntity.class)
-public abstract class LightningBoltMixin extends Entity {
-    public LightningBoltMixin(EntityType<?> type, World world) {
-        super(type, world);
+@Mixin(LightningBolt.class)
+public class LightningBoltMixin {
+    @WrapOperation(method = "clearCopperOnLightningStrike", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/world/level/block/WeatheringCopper;getFirst(Lnet/minecraft/world/level/block/state/BlockState;)Lnet/minecraft/world/level/block/state/BlockState;"))
+    private static BlockState first(BlockState state, Operation<BlockState> original) {
+        if (state.getBlock() instanceof SteveHasWeatheringCopper) {
+            return SteveHasWeatheringCopper.getFirstBlock(state.getBlock()).withPropertiesOf(state);
+        }
+        return original.call(state);
     }
 
-	@Inject(method = "cleanOxidation", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/world/World;setBlockState(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;)Z",
-            shift = At.Shift.AFTER))
-	private static void clearCopperOnLightningStrike(World world, BlockPos pos, CallbackInfo ci, @Local(ordinal = 1) BlockPos blockPos) {
-        BlockState blockStateRedux =  world.getBlockState(blockPos);
-//        System.out.println("THIS IS A TEST " + blockPos);
-//        System.out.println("THIS IS A TEST " + blockStateRedux);
-        if (blockStateRedux.getBlock() instanceof SteveHasWeatheringCopper) {
-            world.setBlockState(blockPos, SteveHasWeatheringCopper.getFirstBlock(world.getBlockState(blockPos).getBlock()).getStateWithProperties(blockStateRedux));
+    @WrapOperation(method = "randomStepCleaningCopper", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/world/level/block/WeatheringCopper;getPrevious(Lnet/minecraft/world/level/block/state/BlockState;)Ljava/util/Optional;"))
+    private static Optional<BlockState> previous(BlockState state, Operation<Optional<BlockState>> original) {
+        if (state.getBlock() instanceof SteveHasWeatheringCopper copper) {
+            return copper.getPreviousBlockGeneric(state.getBlock()).map(block -> block.withPropertiesOf(state));
         }
-	}
-
-    @Inject(method = "cleanOxidationAround(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;)Ljava/util/Optional;", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/block/Oxidizable;getDecreasedOxidationState(Lnet/minecraft/block/BlockState;)Ljava/util/Optional;"),
-            locals = LocalCapture.CAPTURE_FAILHARD)
-    private static void randomStepCleaningCopper(World world, BlockPos pos, CallbackInfoReturnable<Optional<BlockPos>> cir, Iterator var2, BlockPos blockPos, BlockState blockState) {
-        if (blockState.getBlock() instanceof SteveHasWeatheringCopper) {
-            SteveHasWeatheringCopper copperBlock = (SteveHasWeatheringCopper) blockState.getBlock();
-            copperBlock.getPreviousBlockGeneric(blockState.getBlock()).ifPresent((previousBlock)-> {
-                world.setBlockState(blockPos, previousBlock.getStateWithProperties(blockState));
-            });
-        }
+        return original.call(state);
     }
 }

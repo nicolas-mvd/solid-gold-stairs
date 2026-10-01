@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "solid_gold_stairs:block/redstone_slab"
+    },
+    "type=top": {
+      "model": "solid_gold_stairs:block/redstone_slab_top"
+    },
+    "type=double": {
+      "model": "minecraft:block/redstone_block"
+    }
+  }
+}

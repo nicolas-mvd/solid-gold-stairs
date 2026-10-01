@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "solid_gold_stairs:block/oxidized_copper_slab"
+    },
+    "type=top": {
+      "model": "solid_gold_stairs:block/oxidized_copper_slab_top"
+    },
+    "type=double": {
+      "model": "minecraft:block/oxidized_copper"
+    }
+  }
+}

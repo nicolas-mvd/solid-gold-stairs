@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "minecraft:weathered_copper",
+  "result": {
+    "id": "solid_gold_stairs:weathered_copper_slab",
+    "count": 2
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "minecraft:oxidized_copper",
+  "result": {
+    "id": "solid_gold_stairs:oxidized_copper_stairs",
+    "count": 1
+  }
+}

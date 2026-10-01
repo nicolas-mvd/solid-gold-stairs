@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "minecraft:quartz_bricks",
+  "result": {
+    "id": "solid_gold_stairs:quartz_brick_stairs",
+    "count": 1
+  }
+}

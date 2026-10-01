@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "#": "minecraft:quartz_bricks"
+  },
+  "pattern": [
+    "###"
+  ],
+  "result": {
+    "id": "solid_gold_stairs:quartz_brick_slab",
+    "count": 6
+  }
+}

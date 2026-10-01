@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "#": "minecraft:chiseled_quartz_block"
+  },
+  "pattern": [
+    "###"
+  ],
+  "result": {
+    "id": "solid_gold_stairs:chiseled_quartz_slab",
+    "count": 6
+  }
+}

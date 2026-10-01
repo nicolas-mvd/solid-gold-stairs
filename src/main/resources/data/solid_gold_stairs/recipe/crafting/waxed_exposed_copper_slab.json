@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "#": "minecraft:waxed_exposed_copper"
+  },
+  "pattern": [
+    "###"
+  ],
+  "result": {
+    "id": "solid_gold_stairs:waxed_exposed_copper_slab",
+    "count": 6
+  }
+}

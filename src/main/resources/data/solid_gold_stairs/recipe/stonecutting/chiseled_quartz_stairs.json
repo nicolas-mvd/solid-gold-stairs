@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "minecraft:chiseled_quartz_block",
+  "result": {
+    "id": "solid_gold_stairs:chiseled_quartz_stairs",
+    "count": 1
+  }
+}

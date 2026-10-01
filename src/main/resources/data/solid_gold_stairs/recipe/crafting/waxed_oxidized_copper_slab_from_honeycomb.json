@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    "solid_gold_stairs:oxidized_copper_slab",
+    "minecraft:honeycomb"
+  ],
+  "result": {
+    "id": "solid_gold_stairs:waxed_oxidized_copper_slab",
+    "count": 1
+  }
+}

@@ -1,13 +1,13 @@
 package net.steveson.solidgoldstairs.util;
 
-import net.minecraft.block.BlockState;
+import net.minecraft.world.level.block.state.BlockState;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.Degradable;
-import net.minecraft.block.Oxidizable;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.random.Random;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.ChangeOverTimeBlock;
+import net.minecraft.world.level.block.WeatheringCopper;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 
 
 import java.util.Optional;
@@ -18,7 +18,7 @@ import java.util.function.Function;
 
 /**
  * Utility class for handling custom weathering/oxidation logic.
- * Use this when blocks can't be registered in vanilla's immutable Oxidizable maps.
+ * Use this when blocks can't be registered in vanilla's immutable WeatheringCopper maps.
  */
 public class WeatheringHelper {
 
@@ -33,11 +33,11 @@ public class WeatheringHelper {
      * @param state Current block state
      * @param level Server level
      * @param pos Block position
-     * @param random Random source
+     * @param random RandomSource source
      * @param getNextBlock Function that returns the next oxidation stage
      * @return true if oxidation occurred, false otherwise
      */
-    public static boolean tryWeather(BlockState state, ServerWorld level, BlockPos pos, Random random,
+    public static boolean tryWeather(BlockState state, ServerLevel level, BlockPos pos, RandomSource random,
                                      Function<Block, Optional<Block>> getNextBlock) {
         Optional<Block> nextBlock = getNextBlock.apply(state.getBlock());
 
@@ -52,13 +52,13 @@ public class WeatheringHelper {
     }
 
     // this method is the one copied from the vanilla code that checks its neighbors to influence weathering probability.
-    private static void applyChangeOverTime2(BlockState pState, ServerWorld pLevel, BlockPos pPos, Random pRandom, Block nextBlock) {
+    private static void applyChangeOverTime2(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom, Block nextBlock) {
         Block pBlock = pState.getBlock();
 
         int i;
         Enum<?> agedness;
-        if (pBlock instanceof Degradable) {
-            agedness = ((Degradable) pBlock).getDegradationLevel();
+        if (pBlock instanceof ChangeOverTimeBlock) {
+            agedness = ((ChangeOverTimeBlock) pBlock).getAge();
             i = agedness.ordinal();
         }
         else {
@@ -67,8 +67,8 @@ public class WeatheringHelper {
         int j = 0;
         int k = 0;
 
-        for(BlockPos blockpos : BlockPos.iterateOutwards(pPos, 4, 4, 4)) {
-            int l = blockpos.getManhattanDistance(pPos);
+        for(BlockPos blockpos : BlockPos.withinManhattan(pPos, 4, 4, 4)) {
+            int l = blockpos.distManhattan(pPos);
             if (l > 4) {
                 break;
             }
@@ -76,8 +76,8 @@ public class WeatheringHelper {
             if (!blockpos.equals(pPos)) {
                 BlockState blockstate = pLevel.getBlockState(blockpos);
                 Block block = blockstate.getBlock();
-                if (block instanceof Degradable) {
-                    Enum<?> oenum = ((Degradable)block).getDegradationLevel();
+                if (block instanceof ChangeOverTimeBlock) {
+                    Enum<?> oenum = ((ChangeOverTimeBlock)block).getAge();
                     if (agedness.getClass() == oenum.getClass()) {
                         int i1 = oenum.ordinal();
                         if (i1 < i) {
@@ -97,8 +97,8 @@ public class WeatheringHelper {
         float f = (float)(k + 1) / (float)(k + j + 1);
         float f1 = f * f * getChanceModifier(agedness);
         if (pRandom.nextFloat() < f1) {
-            BlockState newState = nextBlock.getStateWithProperties(pState);
-            pLevel.setBlockState(pPos, newState);
+            BlockState newState = nextBlock.withPropertiesOf(pState);
+            pLevel.setBlockAndUpdate(pPos, newState);
 
 //            this.getNext(pState).ifPresent((p_153039_) -> {
 //                pLevel.setBlockAndUpdate(pPos, p_153039_);
@@ -108,7 +108,7 @@ public class WeatheringHelper {
     }
 
     static float getChanceModifier(Enum<?> pAge) {
-        return pAge == Oxidizable.OxidationLevel.UNAFFECTED ? 0.75F : 1.0F;
+        return pAge == WeatheringCopper.WeatherState.UNAFFECTED ? 0.75F : 1.0F;
     }
 
     /**
@@ -129,10 +129,10 @@ public class WeatheringHelper {
      * @param state Current block state
      * @param level Server level
      * @param pos Block position
-     * @param random Random source
+     * @param random RandomSource source
      * @return true if weathering should occur
      */
-    public static boolean shouldWeather(BlockState state, ServerWorld level, BlockPos pos, Random random) {
+    public static boolean shouldWeather(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         return random.nextFloat() < OXIDATION_CHANCE;
     }
 }

@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "solid_gold_stairs:block/gold_slab"
+    },
+    "type=top": {
+      "model": "solid_gold_stairs:block/gold_slab_top"
+    },
+    "type=double": {
+      "model": "minecraft:block/gold_block"
+    }
+  }
+}

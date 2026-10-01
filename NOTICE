@@ -1,0 +1,18 @@
+Solid Gold Stairs — unofficial Minecraft 26.2 Fabric port
+
+Original mod: Steve_Steveson and Steve_StevesonB
+https://github.com/Steve-Steveson/solid_gold_stairs_mod
+https://www.curseforge.com/minecraft/mc-mods/solid-gold-stairs
+Based on 1.20.1-fabric commit 519b045642ba4b4c2e8b201a88d0311fbdc5046e.
+The original declares MIT in fabric.mod.json and on CurseForge. It does not
+contain a standalone LICENSE file; this fork supplies the MIT text and names
+the original credited authors. Git history is preserved.
+
+The upstream WeatheringHelper credits Smallinger's Copper Age Backport.
+https://github.com/Smallinger/Copper-Age-Backport
+Its current repository LICENSE declares CC0-1.0 (the original source comment
+describes it as MIT). We preserve the acknowledgement of this contribution.
+
+Minecraft textures are referenced by identifier and are not redistributed.
+This fork is not an official release by or endorsed by the original authors,
+Mojang, or Microsoft.

@@ -2,14 +2,16 @@
 	"schemaVersion": 1,
 	"id": "solid_gold_stairs",
 	"version": "${version}",
-	"name": "Solid Gold Stairs",
+	"name": "Solid Gold Stairs — Unofficial 26.2 Port",
 	"description": "Adds stairs and slabs for vanilla mineral blocks, including uncut copper",
 	"authors": [
-		"Steve_Steveson, Steve_StevesonB"
+		"Steve_Steveson",
+		"Steve_StevesonB",
+		"nicolas-mvd (26.2 port)"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://www.curseforge.com/minecraft/mc-mods/solid-gold-stairs",
+		"sources": "https://github.com/nicolas-mvd/solid-gold-stairs"
 	},
 	"license": "MIT",
 	"icon": "assets/solid_gold_stairs/icon.png",
@@ -17,18 +19,15 @@
 	"entrypoints": {
 		"main": [
           "net.steveson.solidgoldstairs.SolidGoldStairsMod"
-		],
-		"fabric-datagen": [
-			"net.steveson.solidgoldstairs.SolidGoldStairsDataGenerator"
 		]
 	},
 	"mixins": [
 		"solid_gold_stairs.mixins.json"
 	],
 	"depends": {
-		"fabricloader": ">=0.19.2",
-		"minecraft": "~1.20.1",
-		"java": ">=17",
-		"fabric-api": "*"
+		"fabricloader": ">=0.19.3",
+		"minecraft": "26.2",
+		"java": ">=25",
+		"fabric-api": ">=0.152.2"
 	}
 }

@@ -1,0 +1,46 @@
+// One-time mechanical Yarn 1.20.1 -> Mojang runtime-name migration.
+import fs from 'node:fs';
+import path from 'node:path';
+const names = {
+ 'net.minecraft.block.Block':'net.minecraft.world.level.block.Block',
+ 'net.minecraft.block.BlockState':'net.minecraft.world.level.block.state.BlockState',
+ 'net.minecraft.block.Blocks':'net.minecraft.world.level.block.Blocks',
+ 'net.minecraft.block.StairsBlock':'net.minecraft.world.level.block.StairBlock',
+ 'net.minecraft.block.SlabBlock':'net.minecraft.world.level.block.SlabBlock',
+ 'net.minecraft.block.RedstoneWireBlock':'net.minecraft.world.level.block.RedStoneWireBlock',
+ 'net.minecraft.block.Oxidizable':'net.minecraft.world.level.block.WeatheringCopper',
+ 'net.minecraft.block.Degradable':'net.minecraft.world.level.block.ChangeOverTimeBlock',
+ 'net.minecraft.block.enums.BlockHalf':'net.minecraft.world.level.block.state.properties.Half',
+ 'net.minecraft.block.enums.SlabType':'net.minecraft.world.level.block.state.properties.SlabType',
+ 'net.minecraft.block.enums.StairShape':'net.minecraft.world.level.block.state.properties.StairsShape',
+ 'net.minecraft.entity.player.PlayerEntity':'net.minecraft.world.entity.player.Player',
+ 'net.minecraft.entity.Entity':'net.minecraft.world.entity.Entity',
+ 'net.minecraft.entity.EntityType':'net.minecraft.world.entity.EntityType',
+ 'net.minecraft.entity.LightningEntity':'net.minecraft.world.entity.LightningBolt',
+ 'net.minecraft.item.BlockItem':'net.minecraft.world.item.BlockItem',
+ 'net.minecraft.item.ItemStack':'net.minecraft.world.item.ItemStack',
+ 'net.minecraft.item.Items':'net.minecraft.world.item.Items',
+ 'net.minecraft.item.ItemGroups':'net.minecraft.world.item.CreativeModeTabs',
+ 'net.minecraft.item.Item':'net.minecraft.world.item.Item',
+ 'net.minecraft.registry.Registries':'net.minecraft.core.registries.BuiltInRegistries',
+ 'net.minecraft.registry.RegistryKeys':'net.minecraft.core.registries.Registries',
+ 'net.minecraft.registry.Registry':'net.minecraft.core.Registry',
+ 'net.minecraft.registry.tag.TagKey':'net.minecraft.tags.TagKey',
+ 'net.minecraft.registry.tag.ItemTags':'net.minecraft.tags.ItemTags',
+ 'net.minecraft.server.world.ServerWorld':'net.minecraft.server.level.ServerLevel',
+ 'net.minecraft.sound.SoundCategory':'net.minecraft.sounds.SoundSource',
+ 'net.minecraft.sound.SoundEvents':'net.minecraft.sounds.SoundEvents',
+ 'net.minecraft.util.Identifier':'net.minecraft.resources.Identifier',
+ 'net.minecraft.util.ActionResult':'net.minecraft.world.InteractionResult',
+ 'net.minecraft.util.Hand':'net.minecraft.world.InteractionHand',
+ 'net.minecraft.util.hit.BlockHitResult':'net.minecraft.world.phys.BlockHitResult',
+ 'net.minecraft.util.math.BlockPos':'net.minecraft.core.BlockPos',
+ 'net.minecraft.util.math.Direction':'net.minecraft.core.Direction',
+ 'net.minecraft.util.math.random.Random':'net.minecraft.util.RandomSource',
+ 'net.minecraft.world.BlockView':'net.minecraft.world.level.BlockGetter',
+ 'net.minecraft.world.WorldAccess':'net.minecraft.world.level.LevelAccessor',
+ 'net.minecraft.world.World':'net.minecraft.world.level.Level',
+};
+const words={StairsBlock:'StairBlock',RedstoneWireBlock:'RedStoneWireBlock',Oxidizable:'WeatheringCopper',OxidationLevel:'WeatherState',Degradable:'ChangeOverTimeBlock',BlockHalf:'Half',StairShape:'StairsShape',PlayerEntity:'Player',LightningEntity:'LightningBolt',ItemGroups:'CreativeModeTabs',RegistryKeys:'Registries',ServerWorld:'ServerLevel',SoundCategory:'SoundSource',ActionResult:'InteractionResult',Hand:'InteractionHand',Random:'RandomSource',BlockView:'BlockGetter',WorldAccess:'LevelAccessor',World:'Level',Settings:'Properties',getDefaultState:'defaultBlockState',getStateWithProperties:'withPropertiesOf',getDegradationLevel:'getAge',getManhattanDistance:'distManhattan',iterateOutwards:'withinManhattan',getOpposite:'getOpposite',rotateYClockwise:'getClockWise',rotateYCounterclockwise:'getCounterClockWise',down:'below',offset:'relative',isIn:'is',isOf:'is',emitsRedstonePower:'isSignalSource',getWeakRedstonePower:'getSignal',getStrongRedstonePower:'getDirectSignal',hasRandomTicks:'isRandomlyTicking',getStackInHand:'getItemInHand',setBlockState:'setBlockAndUpdate',syncWorldEvent:'levelEvent',decrement:'shrink'};
+function walk(dir){for(const e of fs.readdirSync(dir,{withFileTypes:true})){const f=path.join(dir,e.name); if(e.isDirectory()){if(e.name!=='datagen')walk(f);}else if(f.endsWith('.java')&&!f.endsWith('DataGenerator.java')){let s=fs.readFileSync(f,'utf8');for(const [a,b] of Object.entries(names).sort((a,b)=>b[0].length-a[0].length))s=s.replaceAll(a,b);for(const [a,b] of Object.entries(words))s=s.replace(new RegExp('\\b'+a+'\\b','g'),b);s=s.replace(/\.get\((HALF|FACING|SHAPE|TYPE)\)/g,'.getValue($1)');fs.writeFileSync(f,s);}}}
+walk('src/main/java');

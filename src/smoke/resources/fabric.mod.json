@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "id": "solid_gold_stairs_smoke",
+  "version": "1.0.0",
+  "name": "Solid Gold Stairs isolated integration tests",
+  "environment": "server",
+  "entrypoints": {"main": ["net.steveson.solidgoldstairs.test.SmokeTests"]},
+  "depends": {"solid_gold_stairs": "*", "fabric-api": "*"}
+}

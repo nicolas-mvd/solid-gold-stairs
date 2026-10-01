@@ -1,32 +1,32 @@
 package net.steveson.solidgoldstairs.block.custom;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Oxidizable;
-import net.minecraft.block.SlabBlock;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.registry.tag.ItemTags;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.WeatheringCopper;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.Level;
 import net.steveson.solidgoldstairs.block.ModBlocks;
 import net.steveson.solidgoldstairs.util.WeatheringHelper;
 
 import java.util.Optional;
 
-public class UncutWeatheringCopperSlabBlock extends SlabBlock implements Oxidizable, SteveHasWeatheringCopper {
+public class UncutWeatheringCopperSlabBlock extends SlabBlock implements WeatheringCopper, SteveHasWeatheringCopper {
 
-    private final Oxidizable.OxidationLevel weatheringState;
+    private final WeatheringCopper.WeatherState weatheringState;
 
-    public UncutWeatheringCopperSlabBlock(OxidationLevel weatheringState, Settings settings) {
+    public UncutWeatheringCopperSlabBlock(WeatherState weatheringState, Properties settings) {
         super(settings);
         this.weatheringState = weatheringState;
     }
@@ -76,68 +76,67 @@ public class UncutWeatheringCopperSlabBlock extends SlabBlock implements Oxidiza
     }
 
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        ItemStack stack = player.getStackInHand(hand);
+    protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 
         // Check if player is using an axe on a waxed slab - dewax it
-        if (stack.isOf(Items.HONEYCOMB)) {
+        if (stack.is(Items.HONEYCOMB)) {
             Optional<Block> waxedBlock = getWaxedBlock(state.getBlock());
 
             if (waxedBlock.isPresent()) {
-                world.playSound(player, pos, SoundEvents.ITEM_HONEYCOMB_WAX_ON, SoundCategory.BLOCKS, 1, 1);
-                world.syncWorldEvent(player, 3003, pos, 0); // WAX_ON particles
+                world.playSound(player, pos, SoundEvents.HONEYCOMB_WAX_ON, SoundSource.BLOCKS, 1, 1);
+                world.levelEvent(player, 3003, pos, 0); // WAX_ON particles
 
-                if (!world.isClient) {
-                    BlockState newState = waxedBlock.get().getStateWithProperties(state);
-                    world.setBlockState(pos, newState);
+                if (!world.isClientSide()) {
+                    BlockState newState = waxedBlock.get().withPropertiesOf(state);
+                    world.setBlockAndUpdate(pos, newState);
                     if (!player.isCreative()) {
-                        stack.decrement(1);
+                        stack.shrink(1);
                     }
                 }
 
-                return ActionResult.success(world.isClient);
+                return InteractionResult.SUCCESS;
             }
         }
 
         // Check if player is using an axe on a waxed slab - dewax it
-        if (stack.isIn(ItemTags.AXES)) {
+        if (stack.is(ItemTags.AXES)) {
             Optional<Block> previousBlock = getPreviousBlock(state.getBlock());
 
             if (previousBlock.isPresent()) {
-                world.playSound(player, pos, SoundEvents.ITEM_AXE_SCRAPE, SoundCategory.BLOCKS, 1, 1);
-                world.syncWorldEvent(player, 3005, pos, 0); // SCRAPE particles
+                world.playSound(player, pos, SoundEvents.AXE_SCRAPE, SoundSource.BLOCKS, 1, 1);
+                world.levelEvent(player, 3005, pos, 0); // SCRAPE particles
 
-                if (!world.isClient) {
-                    BlockState newState = previousBlock.get().getStateWithProperties(state);
-                    world.setBlockState(pos, newState);
+                if (!world.isClientSide()) {
+                    BlockState newState = previousBlock.get().withPropertiesOf(state);
+                    world.setBlockAndUpdate(pos, newState);
                     if (!player.isCreative()) {
-                        stack.damage(1, player, p -> p.sendToolBreakStatus(hand));
+                        stack.hurtAndBreak(1, player, hand);
                     }
                 }
 
-                return ActionResult.success(world.isClient);
+                return InteractionResult.SUCCESS;
             }
         }
 
-        return ActionResult.PASS;
+        return InteractionResult.PASS;
     }
 
     @Override
-    public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+    public void randomTick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
         WeatheringHelper.tryWeather(state, world, pos, random, UncutWeatheringCopperSlabBlock::getNextBlock);
     }
 
     @Override
-    public boolean hasRandomTicks(BlockState state) {
+    public boolean isRandomlyTicking(BlockState state) {
         return WeatheringHelper.canWeather(state, UncutWeatheringCopperSlabBlock::getNextBlock);
     }
 
     @Override
-    public OxidationLevel getDegradationLevel() {
+    public WeatherState getAge() {
         return getWeatheringState();
     }
 
-    public Oxidizable.OxidationLevel getWeatheringState() {
+    public WeatheringCopper.WeatherState getWeatheringState() {
         return this.weatheringState;
     }
 

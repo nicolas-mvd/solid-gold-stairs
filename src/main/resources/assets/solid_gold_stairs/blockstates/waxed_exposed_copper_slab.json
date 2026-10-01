@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "solid_gold_stairs:block/waxed_exposed_copper_slab"
+    },
+    "type=top": {
+      "model": "solid_gold_stairs:block/waxed_exposed_copper_slab_top"
+    },
+    "type=double": {
+      "model": "minecraft:block/exposed_copper"
+    }
+  }
+}

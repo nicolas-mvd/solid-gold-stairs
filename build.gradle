@@ -25,6 +25,14 @@ java {
 }
 tasks.withType(JavaCompile).configureEach { options.release = 25 }
 jar { from('LICENSE', 'NOTICE'); from('LICENSES') { into 'LICENSES' } }
+tasks.named('sourcesJar') {
+    from('LICENSE', 'NOTICE')
+    from('LICENSES') { into 'LICENSES' }
+}
+tasks.withType(Jar).configureEach {
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
+}
 
 // Separate integration-test mod; never included in the downloadable mod JAR.
 sourceSets {

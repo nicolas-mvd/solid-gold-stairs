@@ -15,5 +15,6 @@
   text, and carry the copper-code contributor acknowledgement and license.
 
 Automated validation covers the dedicated server and resource references.
-This first distribution is a beta pending hands-on SKlauncher rendering,
-shader, and multiplayer validation.
+Promoted to stable on 2026-10-01 after the server owner confirmed successful
+SKlauncher connection and in-game stair crafting/use. The JAR is unchanged
+from the tested beta. Shader combinations have not been separately verified.

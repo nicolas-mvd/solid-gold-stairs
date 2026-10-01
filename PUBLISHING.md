@@ -12,8 +12,10 @@ Have a player test the release in SKlauncher: join a test server, craft/place
 stairs and slabs, check inventory models, inner/outer corners, waterlogging,
 and shaders. Take real in-game screenshots of gold stairs, mixed mineral
 stairs/slabs, and copper stages. Automated server tests cannot verify shader
-rendering or every client mod combination. Keep the first release marked beta
-until players complete this visual/multiplayer check.
+rendering or every client mod combination. Version 0.2.0+26.2 was promoted to
+stable after the server owner confirmed connection and stair crafting/use
+in SKlauncher. Take screenshots before submitting; shader combinations have
+not been separately verified.
 
 Make a distinct project icon for this unofficial port; do not present the
 original project's unchanged branding as your own new project. Do not include
@@ -28,7 +30,7 @@ for decoration/building and redstone, and screenshots. Mark client and server
 as required. In content disclosures, declare this is a fork using others'
 work and include the original project/author links.
 
-Upload only the regular mod JAR as a beta version, select **Minecraft 26.2**
+Upload only the regular mod JAR as a release version, select **Minecraft 26.2**
 and **Fabric**, and add **Fabric API** as a required dependency. Include the
 changelog and submit for moderation. A Minecraft version port is a substantive
 code change, but moderators make the final decision about fork eligibility.
@@ -41,7 +43,7 @@ Read [Content Rules](https://modrinth.com/legal/rules) and
 Sign in and [create a Minecraft mod project](https://authors.curseforge.com/#/projects/create/choose-game).
 Select MIT, link the original creator/project prominently, supply an original
 description explaining the 26.2 port, and add a distinct 400×400 project icon
-and real screenshots. Upload the regular JAR tagged **26.2 / Fabric / Beta**,
+and real screenshots. Upload the regular JAR tagged **26.2 / Fabric / Release**,
 with Fabric API as a required dependency, and submit for review. GitHub links
 can provide source and issue tracking; CurseForge expects files uploaded to
 its own platform rather than third-party download links in the description.

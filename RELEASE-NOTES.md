@@ -17,8 +17,10 @@ shape-aware redstone signals. See CHANGELOG.md for port details.
 
 The dedicated-server integration checks passed against an isolated copy of
 an existing world with Carpet and EasyAuth. Asset references were validated
-against Minecraft 26.2. This is a beta: hands-on client rendering, shaders,
-and multiplayer should be checked before calling it a stable release.
+against Minecraft 26.2. On 2026-10-01, the server owner confirmed successful
+client connection and in-game stair crafting/use in SKlauncher and approved
+promoting this release to stable. Shader compatibility depends on the client
+mod combination and has not been separately verified.
 
 **Worlds:** back up before installation. Continue your existing 26.2 world;
 do not regenerate it. Once these blocks/items are in use, keep this mod
